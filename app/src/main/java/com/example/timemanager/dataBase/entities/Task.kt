@@ -8,4 +8,6 @@ data class Task(
     @PrimaryKey
     val id : Int? = null,
     val taskName: String,
+    val description : String?,
+    val isDone : Boolean = true
 )

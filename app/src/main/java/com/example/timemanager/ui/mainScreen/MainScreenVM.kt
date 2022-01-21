@@ -1,44 +1,47 @@
 package com.example.timemanager.ui.mainScreen
 
+
 import androidx.lifecycle.ViewModel
-import com.example.timemanager.base.BaseViewModel
-import com.example.timemanager.common.async
+import androidx.lifecycle.viewModelScope
 import com.example.timemanager.dataBase.entities.Task
 import com.example.timemanager.domain.repositories.MainRepository
-import com.example.timemanager.domain.useCase.GetTasksUseCase
-import com.example.timemanager.domain.useCase.SaveTaskUseCase
+import com.example.timemanager.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenVM @Inject constructor(
-    private val getTasksUseCase: GetTasksUseCase,
-    private val saveTaskUseCase: SaveTaskUseCase
-) : BaseViewModel() {
-    init {
-        getTasks()
-    }
+    private val mainRepository: MainRepository
+) : ViewModel() {
 
-    private fun getTasks() {
-        registerDisposable(
-            getTasksUseCase.start()
-                .map {
-                    val variable = it
-                }
-                .onErrorReturn {
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-                }
-                .async()
-                .subscribe()
-        )
-    }
+    val tasks = mainRepository.getTasks()
 
-    private fun saveTask() {
-        saveTaskUseCase.start(Task(taskName = "pirveli"))
-            .map {
 
+    fun onEvent(mainScreenEvent: MainScreenEvent) {
+        when (mainScreenEvent) {
+            MainScreenEvent.AddTask -> {
+                saveTask()
             }
-            .async()
-            .subscribe()
+            is MainScreenEvent.CheckBoxClicked -> {
+                viewModelScope.launch {
+                    mainRepository.addTask(Task(taskName = "blabla", description = "Asdasdasdad"))
+                }
+            }
+
+            is MainScreenEvent.OnTaskDeleteClick -> {
+                viewModelScope.launch {
+                    mainRepository.deleteTask(mainScreenEvent.task)
+                }
+            }
+        }
+    }
+    private fun saveTask() {
+
     }
 }
