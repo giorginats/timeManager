@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.timemanager.dataBase.entities.Task
 import com.example.timemanager.domain.repositories.MainRepository
+import com.example.timemanager.ui.destinations.AddTaskScreenDestination
 import com.example.timemanager.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -26,7 +27,7 @@ class MainScreenVM @Inject constructor(
     fun onEvent(mainScreenEvent: MainScreenEvent) {
         when (mainScreenEvent) {
             MainScreenEvent.AddTask -> {
-                saveTask()
+
             }
             is MainScreenEvent.CheckBoxClicked -> {
                 viewModelScope.launch {
@@ -39,9 +40,15 @@ class MainScreenVM @Inject constructor(
                     mainRepository.deleteTask(mainScreenEvent.task)
                 }
             }
+            MainScreenEvent.GoToAddTaskScreenEvent -> {
+                sendUiEvent(UiEvent.Navigate(AddTaskScreenDestination))
+            }
         }
     }
-    private fun saveTask() {
 
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
     }
 }
