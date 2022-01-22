@@ -12,8 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.timemanager.ui.mainScreen.MainScreen
+import com.example.timemanager.ui.mainScreen.NavGraphs
 import com.example.timemanager.ui.theme.TimeManagerTheme
 import com.example.timemanager.util.Routes
+import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,17 +24,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TimeManagerTheme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = Routes.MAIN_SCREEN
-                ){
-                    composable(Routes.MAIN_SCREEN){
-                        MainScreen(
-                        )
-                    }
-                }
+                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
     }
 }
+
+//val navController = rememberNavController()
+//NavHost(
+//navController = navController,
+//startDestination = Routes.MAIN_SCREEN
+//){
+//    composable(Routes.MAIN_SCREEN){
+//        MainScreen(
+//        )
+//    }
+//}
