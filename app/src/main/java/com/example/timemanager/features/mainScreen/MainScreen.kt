@@ -1,4 +1,4 @@
-package com.example.timemanager.ui.mainScreen
+package com.example.timemanager.features.mainScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.timemanager.ui.destinations.AddTaskScreenDestination
+import com.example.timemanager.features.destinations.AddTaskScreenDestination
 import com.example.timemanager.util.UiEvent
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

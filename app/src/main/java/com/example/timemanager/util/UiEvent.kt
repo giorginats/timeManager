@@ -1,7 +1,6 @@
 package com.example.timemanager.util
 
-import com.example.timemanager.ui.destinations.DirectionDestination
-import java.util.*
+import com.example.timemanager.features.destinations.DirectionDestination
 
 sealed class UiEvent {
     object PopBackStack : UiEvent()

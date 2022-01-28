@@ -1,4 +1,4 @@
-package com.example.timemanager.ui.mainScreen
+package com.example.timemanager.features.mainScreen
 
 import com.example.timemanager.dataBase.entities.Task
 
