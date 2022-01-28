@@ -9,4 +9,5 @@ sealed class UiEvent {
         val message: String,
         val action: String? = null
     ) : UiEvent()
+    data class Something(val sasda: String) : UiEvent()
 }

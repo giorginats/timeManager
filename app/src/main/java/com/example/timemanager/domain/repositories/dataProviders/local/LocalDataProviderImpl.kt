@@ -20,4 +20,8 @@ class LocalDataProviderImpl @Inject constructor(
     override suspend fun deleteTask(task: Task) {
         return taskDao.deleteTask(task)
     }
+
+    override suspend fun isDone(task: Task) {
+        return taskDao.addTask(task)
+    }
 }

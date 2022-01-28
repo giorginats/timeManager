@@ -26,12 +26,13 @@ class MainScreenVM @Inject constructor(
 
     fun onEvent(mainScreenEvent: MainScreenEvent) {
         when (mainScreenEvent) {
-            MainScreenEvent.AddTask -> {
-
-            }
             is MainScreenEvent.CheckBoxClicked -> {
                 viewModelScope.launch {
-                    mainRepository.addTask(Task(taskName = "blabla", description = "Asdasdasdad"))
+                    mainRepository.isDone(
+                        mainScreenEvent.task.copy(
+                            isDone = mainScreenEvent.isClicked
+                        )
+                    )
                 }
             }
 

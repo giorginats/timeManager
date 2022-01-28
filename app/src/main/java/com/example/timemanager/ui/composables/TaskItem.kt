@@ -56,7 +56,7 @@ fun TaskItem(
         Checkbox(
             checked = task.isDone,
             onCheckedChange = { isChecked ->
-                onEvent(MainScreenEvent.CheckBoxClicked(isChecked))
+                onEvent(MainScreenEvent.CheckBoxClicked(task, isChecked))
             }
         )
     }

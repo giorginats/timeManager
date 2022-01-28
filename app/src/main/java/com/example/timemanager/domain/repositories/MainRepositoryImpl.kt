@@ -20,4 +20,8 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun deleteTask(task: Task) {
         return localDataProvider.deleteTask(task)
     }
+
+    override suspend fun isDone(task: Task) {
+        return localDataProvider.isDone(task)
+    }
 }

@@ -61,9 +61,6 @@ fun MainScreen(
                     onEvent = viewModel::onEvent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            navigator.navigate(AddTaskScreenDestination)
-                        }
                         .padding(16.dp)
                 )
             }

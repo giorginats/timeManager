@@ -32,7 +32,14 @@ class AddTaskScreenVM @Inject constructor(
         when (screenEvent) {
             AddTaskScreenEvent.AddTask -> {
                 viewModelScope.launch {
-                    mainRepository.addTask(Task(taskName = "blabla", description = "Asdasdasdad"))
+                    if(title.isBlank()) {
+                        sendUiEvent(UiEvent.ShowSnackBar(
+                            message = "The title can't be empty"
+                        ))
+                        return@launch
+                    }
+                    mainRepository.addTask(Task(taskName = title, description = description))
+                    sendUiEvent(UiEvent.PopBackStack)
                 }
             }
             is AddTaskScreenEvent.OnDescriptionChanged -> {
@@ -43,5 +50,9 @@ class AddTaskScreenVM @Inject constructor(
             }
         }
     }
-
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
+    }
 }

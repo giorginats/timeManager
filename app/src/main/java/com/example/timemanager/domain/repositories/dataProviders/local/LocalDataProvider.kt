@@ -7,4 +7,5 @@ interface LocalDataProvider {
     fun getTasks(): Flow<List<Task>>
     suspend fun addTask(task: Task)
     suspend fun deleteTask(task: Task)
+    suspend fun isDone(task: Task)
 }
