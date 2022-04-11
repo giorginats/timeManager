@@ -3,10 +3,9 @@ package com.example.timemanager.features.mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.timemanager.dataBase.entities.Task
 import com.example.timemanager.domain.repositories.MainRepository
 import com.example.timemanager.features.destinations.AddTaskScreenDestination
-import com.example.timemanager.util.UiEvent
+import com.example.timemanager.util.GlobalUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -18,7 +17,7 @@ class MainScreenVM @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    private val _uiEvent = Channel<UiEvent>()
+    private val _uiEvent = Channel<GlobalUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     val tasks = mainRepository.getTasks()
@@ -42,14 +41,14 @@ class MainScreenVM @Inject constructor(
                 }
             }
             MainScreenEvent.GoToAddTaskScreenEvent -> {
-                sendUiEvent(UiEvent.Navigate(AddTaskScreenDestination))
+                sendUiEvent(GlobalUiEvent.Navigate(AddTaskScreenDestination))
             }
         }
     }
 
-    private fun sendUiEvent(event: UiEvent) {
+    private fun sendUiEvent(eventGlobal: GlobalUiEvent) {
         viewModelScope.launch {
-            _uiEvent.send(event)
+            _uiEvent.send(eventGlobal)
         }
     }
 }

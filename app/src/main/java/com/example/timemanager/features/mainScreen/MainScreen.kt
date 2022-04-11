@@ -1,6 +1,5 @@
 package com.example.timemanager.features.mainScreen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,8 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.timemanager.features.destinations.AddTaskScreenDestination
-import com.example.timemanager.util.UiEvent
+import com.example.timemanager.util.GlobalUiEvent
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
@@ -32,7 +30,7 @@ fun MainScreen(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Navigate -> {
+                is GlobalUiEvent.Navigate -> {
                     navigator.navigate(event.destination)
                 }
                 else -> Unit

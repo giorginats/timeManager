@@ -1,58 +1,54 @@
 package com.example.timemanager.features.addTaskScreen
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.timemanager.base.BaseViewModel
 import com.example.timemanager.dataBase.entities.Task
 import com.example.timemanager.domain.repositories.MainRepository
-import com.example.timemanager.util.UiEvent
+import com.example.timemanager.util.GlobalUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskScreenVM @Inject constructor(
     private val mainRepository: MainRepository
-) : ViewModel() {
+) : BaseViewModel<AddTaskScreenEvent, AddTaskScreenState>() {
 
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
+    override fun createInitialState(): AddTaskScreenState {
+        return AddTaskScreenState()
+    }
 
-    var title by mutableStateOf("")
-        private set
-
-    var description by mutableStateOf("")
-        private set
-
-    fun onEvent(screenEvent: AddTaskScreenEvent) {
-        when (screenEvent) {
+    override fun onEvent(event: AddTaskScreenEvent) {
+        when (event) {
             AddTaskScreenEvent.AddTask -> {
                 viewModelScope.launch {
-                    if(title.isBlank()) {
-                        sendUiEvent(UiEvent.ShowSnackBar(
-                            message = "The title can't be empty"
-                        ))
+                    if (state.value.title == null || state.value.title == "") {
+                        sendGlobalUiEvent(
+                            GlobalUiEvent.ShowSnackBar(
+                                message = "The title can't be empty"
+                            )
+                        )
                         return@launch
                     }
-                    mainRepository.addTask(Task(taskName = title, description = description))
-                    sendUiEvent(UiEvent.PopBackStack)
+                    mainRepository.addTask(
+                        Task(
+                            taskName = state.value.title!!,
+                            description = state.value.description ?: ""
+                        )
+                    )
+                    sendGlobalUiEvent(GlobalUiEvent.PopBackStack)
                 }
             }
             is AddTaskScreenEvent.OnDescriptionChanged -> {
-                description = screenEvent.description
+                setState {
+                    copy(description = event.description)
+                }
             }
             is AddTaskScreenEvent.OnTitleChanged -> {
-                title = screenEvent.title
+                setState {
+                    copy(title = event.title)
+                }
             }
-        }
-    }
-    private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
         }
     }
 }

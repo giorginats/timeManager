@@ -2,12 +2,11 @@ package com.example.timemanager.util
 
 import com.example.timemanager.features.destinations.DirectionDestination
 
-sealed class UiEvent {
-    object PopBackStack : UiEvent()
-    data class Navigate(val destination: DirectionDestination) : UiEvent()
+sealed class GlobalUiEvent {
+    object PopBackStack : GlobalUiEvent()
+    data class Navigate(val destination: DirectionDestination) : GlobalUiEvent()
     data class ShowSnackBar(
         val message: String,
         val action: String? = null
-    ) : UiEvent()
-    data class Something(val sasda: String) : UiEvent()
+    ) : GlobalUiEvent()
 }
